@@ -1,6 +1,7 @@
 import datetime
 import warnings
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models.signals import post_delete, post_save, pre_delete
 
@@ -67,7 +68,7 @@ class PositionField(models.IntegerField):
         if not add and self.collection is not None:
             try:
                 previous_instance = type(model_instance)._default_manager.get(pk=model_instance.pk)
-            except type(model_instance).DoesNotExist():
+            except ObjectDoesNotExist:
                 pass
             else:
                 for field_name in self.collection:
